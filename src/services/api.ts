@@ -3,14 +3,6 @@ export interface UrlRecordOutput {
   exp: string;
 }
 
-export interface UrlRecord {
-  id: string;
-  short_code: string;
-  old_url: string;
-  create_at: string;
-  exp: number;
-}
-
 let BASE_URL = localStorage.getItem('api_base_url') || 'http://localhost:8080';
 
 export function getBaseUrl(): string {
@@ -23,7 +15,7 @@ export function setBaseUrl(url: string): void {
 }
 
 export async function shortenUrl(url: string): Promise<UrlRecordOutput> {
-  const response = await fetch(`${BASE_URL}/shorten`, {
+  const response = await fetch(`${BASE_URL}/`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ url }),
@@ -35,10 +27,4 @@ export async function shortenUrl(url: string): Promise<UrlRecordOutput> {
   }
 
   return response.json() as Promise<UrlRecordOutput>;
-}
-
-export async function listUrls(): Promise<UrlRecord[]> {
-  const response = await fetch(`${BASE_URL}/urls`);
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return response.json() as Promise<UrlRecord[]>;
 }
